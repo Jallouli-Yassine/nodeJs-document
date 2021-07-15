@@ -9,13 +9,18 @@ const userScheme = new mongoose.Schema({
         type : String,
         require : true
     },
-    phone : {
-        type : Number,
+    email :{
+        type : String,
+        require : true,
+        unique: true,
+    },
+    password :{
+        type : String ,
         require : true
     },
     role :{
         type : String,
-    },
+    }
 })
 
 const User = mongoose.model("user",userScheme);
