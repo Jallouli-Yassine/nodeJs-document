@@ -79,6 +79,23 @@ app.get('/one/:idUser', async (req, res) => {
         res.status(400).send({ message: "error !" })
     }
 })
-
+/*
+app.delete('/deletAll', (req, res) => {
+    let users = await User.find({ role: 'user' })
+    console.log(users.length);
+    for (let i = 0; i < users.length; i++) {
+        User.findOneAndRemove({ _id: users[i].id }).then((user) => {
+            if (!user)
+                res.status(400).send({ message: "user not found !" })
+            else {
+                res.status(200).send(user);
+            }
+        }).catch((e) => {
+            res.status(400).send(e);
+        })
+    }
+})
+*/
 // xD
+
 module.exports = app;
