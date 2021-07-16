@@ -79,23 +79,76 @@ app.get('/one/:idUser', async (req, res) => {
         res.status(400).send({ message: "error !" })
     }
 })
-/*
-app.delete('/deletAll', (req, res) => {
-    let users = await User.find({ role: 'user' })
-    console.log(users.length);
-    for (let i = 0; i < users.length; i++) {
-        User.findOneAndRemove({ _id: users[i].id }).then((user) => {
-            if (!user)
-                res.status(400).send({ message: "user not found !" })
-            else {
-                res.status(200).send(user);
+
+//DELETE
+
+//delete all
+app.delete('/deleteAll', async (req, res) => {
+    try {
+        let users = await User.find({ role: 'user' })
+        if (users.length != 0) {
+            for (let i = 0; i < users.length; i++) {
+                User.findOneAndRemove({ _id: users[i].id }).then((user) => {
+                    if (!user)
+                        res.status(400).send({ message: "user not found !" })
+                    else {
+                        res.status(200).send({ message: done });
+                    }
+                }).catch((e) => {
+                    res.status(400).send(e);
+                })
             }
-        }).catch((e) => {
-            res.status(400).send(e);
-        })
+        } else
+            res.status(400).send({ message: "table already deleted" })
+    } catch (error) {
+        res.status(404).send(error);
     }
+
 })
-*/
-// xD
+
+//delete one
+app.delete('/deleOne/:idUser', (req, res) => {
+    let id = req.params.idUser;
+    User.findOneAndRemove({ role: "user", _id: id }).then((user) => {
+        if (!user)
+            res.status(400).send({ message: "user nexiste pas!" })
+        else
+            res.status(200).send(user)
+    }).catch(e => {
+        res.status(400).send(e)
+    })
+
+})
+
+app.patch('/update/:idUser', (req, res) => {
+
+    let id = req.params.idUser;
+    let data = req.body;
+
+    //2 - creation d'un object <= data
+    let userUpdated = new User({
+        firstname: data._firstname,
+        lastname: data._lastname,
+        email: data._email,
+        role: "user",
+    });
+
+    User.findOne({ role: "user", _id: id })
+        .then((user) => {
+            if (!user) {
+                res.status(400).send({ message: "user not found !" })
+            } else {
+                user.firstname = userUpdated.firstname;
+                user.lastname = userUpdated.lastname;
+                user.email = userUpdated.email;
+                user.phone = userUpdated.phone;
+                user.save();
+                res.status(200).send({ message: "User Info updated !" });
+            }
+        })
+        .catch(() => {
+            res.status(400).send({ message: "error !" })
+        })
+});
 
 module.exports = app;
