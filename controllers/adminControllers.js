@@ -15,6 +15,7 @@ app.post('/register', (req, res) => {
     let admin = new User({
         firstname: data._firstname,
         lastname: data._lastname,
+        phone: data._phone,
         email: data._email,
         password: hashedPassword,
         role: "admin",

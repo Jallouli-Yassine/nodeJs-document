@@ -15,6 +15,7 @@ app.post('/register', (req, res) => {
     let user = new User({
         firstname: data._firstname,
         lastname: data._lastname,
+        phone: data._phone,
         email: data._email,
         password: hashedPassword,
         role: "user",
@@ -44,6 +45,7 @@ app.post('/login', (req, res) => {
                     id: user._id,
                     firstname: user.firstname,
                     lastname: user.lastname,
+                    phone: user.phone,
                     email: user.email,
                     role: user.role,
                 }
